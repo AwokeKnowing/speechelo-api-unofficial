@@ -6,7 +6,7 @@ import time
 
 class Speechelo:
 
-    def __init__(self, config):
+    def __init__(self):
 
         self.headers = headers = {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
