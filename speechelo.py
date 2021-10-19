@@ -61,7 +61,6 @@ class Speechelo:
         }
 
         body = {"data": json.dumps({**self.voiceConfig, **data})}
-        print(body)
 
         r = self.rsession.post(
             "https://app.blasteronline.com/speechelo/blastVoice", 
@@ -70,10 +69,10 @@ class Speechelo:
         r = self.rsession.get(
             "https://app.blasteronline.com/speechelo/getMyBlasters/?_=" +
             str(int(time.time()*1000)), headers=self.headers)
+        
         response = r.json()
           
         url = response['data'][-1]['download_link']
-        print(url)
 
         return url
 
@@ -87,10 +86,14 @@ class Speechelo:
             stderr=asyncio.subprocess.PIPE)
 
         stdout, stderr = await proc.communicate()
+        print(stdout)
+        print(stderr)
 
     async def say(self, text):
         url = await self.text2url(text)
         print(url)
         
         return await self.playhttp(url)
+
+
         
