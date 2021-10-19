@@ -1,3 +1,4 @@
+import json
 import requests
 import re
 from subprocess import Popen
@@ -59,7 +60,7 @@ class Speechelo:
             "campaignId": self.campaignId
         }
 
-        data = {**self.voiceConfig, **data}
+        data = {"data": json.dumps({**self.voiceConfig, **data})}
 
         self.x=requests.Request('POST', "https://app.blasteronline.com/speechelo/blastVoice", data=data,headers=self.headers)
         
