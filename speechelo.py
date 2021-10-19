@@ -83,12 +83,13 @@ class Speechelo:
                    ' ! mpegaudioparse ! avdec_mp3 ! audioconvert ! ' +
                    'alsasink -e device=' + self.hwdevice]) 
 
-        time.sleep(1)
+        time.sleep(10)
         p.terminate()
 
 
     def say(self, text):
         url = self.text2url(text)
+        print(url)
         self.playhttp(url)
         
         
