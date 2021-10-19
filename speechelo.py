@@ -58,7 +58,7 @@ class Speechelo:
             "campaignId": self.campaignId
         }
 
-        data = {**self.voice, **data}
+        data = {**self.voiceConfig, **data}
 
         r = requests.post("https://app.blasteronline.com/speechelo/blastVoice", 
                           data=data, headers=self.headers, cookies=self.cookies)
