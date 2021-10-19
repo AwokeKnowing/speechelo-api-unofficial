@@ -61,6 +61,7 @@ class Speechelo:
         }
 
         body = {"data": json.dumps({**self.voiceConfig, **data})}
+        print(body)
 
         r = self.rsession.post(
             "https://app.blasteronline.com/speechelo/blastVoice", 
