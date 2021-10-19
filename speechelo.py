@@ -71,7 +71,7 @@ class Speechelo:
         self.cookies = r.cookies
 
         response = r.json()
-        print(r.json())
+        
 
         url = response['data'][-1]['download_link']
 
@@ -89,7 +89,7 @@ class Speechelo:
 
     def say(self, text):
         url = self.text2url(text)
-        playhttp(url)
+        self.playhttp(url)
         
         
 
