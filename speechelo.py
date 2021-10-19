@@ -31,9 +31,10 @@ class Speechelo:
             'password': password
         }
 
-        r = requests.post("https://app.blasteronline.com/user/authenticate", 
+        self.rsession = requests.Session() 
+
+        self.rsession.post("https://app.blasteronline.com/user/authenticate", 
                           data=data, headers=self.headers)
-        self.cookies = r.cookies
 
         return self
 
@@ -60,19 +61,15 @@ class Speechelo:
 
         data = {**self.voiceConfig, **data}
 
-        r = requests.post("https://app.blasteronline.com/speechelo/blastVoice", 
+        r = self.rsession.post("https://app.blasteronline.com/speechelo/blastVoice", 
                           data=data, headers=self.headers, cookies=self.cookies)
         
-        self.cookies = r.cookies
+        r = self.rsession.get("https://app.blasteronline.com/speechelo/getMyBlasters/?_="+
+                         str(int(time.time()*1000)), headers=self.headers, cookies=self.cookies)
         
-        r = requests.get("https://app.blasteronline.com/speechelo/getMyBlasters/?_="+
-                         str(int(time.time())), headers=self.headers, cookies=self.cookies)
-        
-        self.cookies = r.cookies
-
         response = r.json()
-        
-
+        self.items = response
+          
         url = response['data'][-1]['download_link']
 
         return url
