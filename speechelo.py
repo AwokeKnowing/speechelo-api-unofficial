@@ -15,14 +15,14 @@ class Speechelo:
             'X-Requested-With': 'XMLHttpRequest'
         }
 
-        self.voice = {
+        self.voiceConfig = {
             "languageSelected":"en-US",
             "engineSelected":"neural",
             "voiceSelected":"Salli",
             "toneSelected":"normal"
         }
 
-        self.device = 'hw:0,0'  
+        self.devicehw = 'hw:0,0'  
 
 
     def auth(self, user, password):
@@ -42,12 +42,12 @@ class Speechelo:
         self.campaignId = campaignId
         return self
 
-    def voice(self, voice):
-        self.voice = voice
+    def voice(self, voiceConfig):
+        self.voiceConfig = voiceConfig
         return self
 
-    def device(self, device):
-        self.device = device
+    def device(self, hwdevice):
+        self.hwdevice = hwdevice
         return self
 
     def text2url(self, text):
@@ -81,7 +81,7 @@ class Speechelo:
         p = Popen(['watch', 
                    'gst-launch-1.0 souphttpsrc location=' + url +
                    ' ! mpegaudioparse ! avdec_mp3 ! audioconvert ! ' +
-                   'alsasink -e device=' + self.device]) 
+                   'alsasink -e device=' + self.hwdevice]) 
 
         time.sleep(1)
         p.terminate()
