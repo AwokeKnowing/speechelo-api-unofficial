@@ -77,7 +77,7 @@ class Speechelo:
 
         return url
 
-    def playhttp(url):
+    def playhttp(self, url):
         p = Popen(['watch', 
                    'gst-launch-1.0 souphttpsrc location=' + url +
                    ' ! mpegaudioparse ! avdec_mp3 ! audioconvert ! ' +
