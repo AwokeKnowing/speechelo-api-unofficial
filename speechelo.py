@@ -76,9 +76,9 @@ class Speechelo:
         return url
 
     async def playhttp(self, url):
-        command = 'gst-launch-1.0 souphttpsrc location=' + url +
-                  ' ! mpegaudioparse ! avdec_mp3 ! audioconvert' +
-                  ' ! alsasink -e device=' + self.hwdevice
+        command = ('gst-launch-1.0 souphttpsrc location=' + url +
+                   ' ! mpegaudioparse ! avdec_mp3 ! audioconvert' +
+                   ' ! alsasink -e device=' + self.hwdevice)
         proc = await asyncio.create_subprocess_shell(
             command,
             stdout=asyncio.subprocess.PIPE,
