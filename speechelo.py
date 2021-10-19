@@ -72,6 +72,7 @@ class Speechelo:
         response = r.json()
           
         url = response['data'][-1]['download_link']
+        print(url)
 
         return url
 
