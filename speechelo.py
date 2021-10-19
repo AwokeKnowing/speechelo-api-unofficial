@@ -61,6 +61,8 @@ class Speechelo:
 
         data = {**self.voiceConfig, **data}
 
+        print(requests.Request('POST', "https://app.blasteronline.com/speechelo/blastVoice", data=data,headers=self.headers))
+        exit()
         r = self.rsession.post("https://app.blasteronline.com/speechelo/blastVoice", 
                           data=data, headers=self.headers)
         self.blast = r.json()
