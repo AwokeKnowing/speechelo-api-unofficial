@@ -62,10 +62,10 @@ class Speechelo:
         data = {**self.voiceConfig, **data}
 
         r = self.rsession.post("https://app.blasteronline.com/speechelo/blastVoice", 
-                          data=data, headers=self.headers, cookies=self.cookies)
+                          data=data, headers=self.headers)
         
         r = self.rsession.get("https://app.blasteronline.com/speechelo/getMyBlasters/?_="+
-                         str(int(time.time()*1000)), headers=self.headers, cookies=self.cookies)
+                         str(int(time.time()*1000)), headers=self.headers)
         
         response = r.json()
         self.items = response
