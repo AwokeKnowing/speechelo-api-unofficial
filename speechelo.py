@@ -1,7 +1,7 @@
+import asyncio
 import json
 import requests
 import re
-from subprocess import Popen
 import time
 
 
@@ -52,7 +52,7 @@ class Speechelo:
         self.hwdevice = hwdevice
         return self
 
-    def text2url(self, text):
+    async def text2url(self, text):
         data = {
             "text":text,
             "charCount": len(text),
@@ -60,39 +60,35 @@ class Speechelo:
             "campaignId": self.campaignId
         }
 
-        data = {"data": json.dumps({**self.voiceConfig, **data})}
+        body = {"data": json.dumps({**self.voiceConfig, **data})}
 
-        #self.x=requests.Request('POST', "https://app.blasteronline.com/speechelo/blastVoice", data=data,headers=self.headers)
+        r = self.rsession.post(
+            "https://app.blasteronline.com/speechelo/blastVoice", 
+            data=body, headers=self.headers)
         
-        #return
-        r = self.rsession.post("https://app.blasteronline.com/speechelo/blastVoice", 
-                          data=data, headers=self.headers)
-        self.blast = r.json()
-        
-        r = self.rsession.get("https://app.blasteronline.com/speechelo/getMyBlasters/?_="+
-                         str(int(time.time()*1000)), headers=self.headers)
-        
+        r = self.rsession.get(
+            "https://app.blasteronline.com/speechelo/getMyBlasters/?_=" +
+            str(int(time.time()*1000)), headers=self.headers)
         response = r.json()
-        self.items = response
           
         url = response['data'][-1]['download_link']
 
         return url
 
-    def playhttp(self, url):
-        p = Popen(['watch', 
-                   'gst-launch-1.0 souphttpsrc location=' + url +
-                   ' ! mpegaudioparse ! avdec_mp3 ! audioconvert ! ' +
-                   'alsasink -e device=' + self.hwdevice]) 
+    async def playhttp(self, url):
+        command = 'gst-launch-1.0 souphttpsrc location=' + url +
+                  ' ! mpegaudioparse ! avdec_mp3 ! audioconvert' +
+                  ' ! alsasink -e device=' + self.hwdevice
+        proc = await asyncio.create_subprocess_shell(
+            command,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE)
 
-        time.sleep(10)
-        p.terminate()
+        stdout, stderr = await proc.communicate()
 
-
-    def say(self, text):
-        url = self.text2url(text)
+    async def say(self, text):
+        url = await self.text2url(text)
         print(url)
-        self.playhttp(url)
         
+        return await self.playhttp(url)
         
-
